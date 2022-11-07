@@ -40,6 +40,12 @@ class _MyHomePageState extends State<MyHomePage> {
   WeatherResponse? _response;
 
   @override
+  void dispose(){
+    _cityTextController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -75,17 +81,33 @@ class _MyHomePageState extends State<MyHomePage> {
                     Text(_response!.weatherInfo.description)
                   ],
                 ),
+
+                
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 50),
                 child: SizedBox(
                   width: 150,
+                  
                   child: TextField(
                       controller: _cityTextController,
-                      decoration: const InputDecoration(labelText: 'City'),
+                      decoration: const InputDecoration(labelText: 'City Name',
+                      border: OutlineInputBorder()),
                       textAlign: TextAlign.center),
                 ),
               ),
-              ElevatedButton(onPressed: _search, child: const Text('Search'))
+
+              ValueListenableBuilder<TextEditingValue>(
+        valueListenable: _cityTextController,
+        builder: (context, value, child) {
+          return ElevatedButton(
+            onPressed: _search,
+            
+            child: value.text.isNotEmpty ? const Text('UPDATE'):const Text('SAVE'),
+          );
+        },
+      ),
+              // ElevatedButton(
+              //   onPressed: _search, child: const Text('Search'))
             ],
           ),
         ),
