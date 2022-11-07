@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/splash.dart';
+import 'package:weather_app/services.dart';
+import 'package:weather_app/weather.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,13 +33,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  final _cityTextController = TextEditingController();
+  final _dataService = DataService();
+
+  WeatherResponse? _response;
 
   @override
   Widget build(BuildContext context) {
@@ -59,25 +59,42 @@ class _MyHomePageState extends State<MyHomePage> {
     )
   ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (_response != null)
+                Column(
+                  children: [
+                    Image.network(_response!.iconUrl),
+                    Text(
+                      '${_response!.tempInfo.temperature}°',
+                      style: const TextStyle(fontSize: 40),
+                    ),
+                    Text(_response!.weatherInfo.description)
+                  ],
+                ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 50),
+                child: SizedBox(
+                  width: 150,
+                  child: TextField(
+                      controller: _cityTextController,
+                      decoration: const InputDecoration(labelText: 'City'),
+                      textAlign: TextAlign.center),
+                ),
+              ),
+              ElevatedButton(onPressed: _search, child: const Text('Search'))
+            ],
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+   void _search() async {
+    final response = await _dataService.getWeather(_cityTextController.text);
+   setState(() => _response= response);
   }
 }

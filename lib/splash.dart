@@ -30,7 +30,7 @@ class _SplashState extends State<Splash> {
         context,
         MaterialPageRoute(
             builder: (context) => const MyHomePage(
-                  title: 'Hello',
+                  title: 'Weather',
                 )));
   }
 
@@ -75,7 +75,7 @@ class _SplashState extends State<Splash> {
               onPressed: () {
                 Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const MyHomePage(title: 'Hello',)),
+                MaterialPageRoute(builder: (context) => const MyHomePage(title: 'Weather',)),
               );
               },
             ),
