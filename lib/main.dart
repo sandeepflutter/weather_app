@@ -36,6 +36,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   var location="";
+  var lat="";
+  var lon ="";
 
   void getCurrentLocation() async{
 bool serviceEnabled;
@@ -73,21 +75,30 @@ bool serviceEnabled;
 
 setState(() {
   location = "$position.latitude ,$position.longitude";
+ // lat = "$position.latitude";
+  lon ="$position.longitude";
 });
 
   }
 
   final _cityTextController = TextEditingController();
+  final _cityTextController1 = TextEditingController();
   final _dataService = DataService();
+  final _dataService1= DataService1();
 
   WeatherResponse? _response;
+  WeatherResponse? _response1;
 
    @override
   void initState() {
     super.initState();
    getCurrentLocation();
 
+      _search1();
+
   }
+
+  
 
   @override
   void dispose(){
@@ -120,6 +131,7 @@ setState(() {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+
               if (_response != null)
                 Column(
                   children: [
@@ -131,6 +143,21 @@ setState(() {
                     Text(_response!.weatherInfo.description)
                   ],
                 ),
+
+                if (_response1 != null && _response == null)
+                   Column(
+                  children: [
+                    Image.network(_response1!.iconUrl),
+                    Text(
+                      '${_response1!.tempInfo.temperature}°',
+                      style: const TextStyle(fontSize: 40),
+                    ),
+                    Text(_response1!.weatherInfo.description)
+                  ],
+                ),
+
+                  
+                
 
                 
               Padding(
@@ -146,6 +173,7 @@ setState(() {
                 ),
               ),
 
+
 //Changing value of button as per Input text
               ValueListenableBuilder<TextEditingValue>(
         valueListenable: _cityTextController,
@@ -157,7 +185,17 @@ setState(() {
         },
       ),
 
-        Text("Position: $location"),
+    // ValueListenableBuilder<TextEditingValue>(
+    //     valueListenable: _cityTextController,
+    //     builder: (context, value, child) {
+    //       return ElevatedButton(
+    //         onPressed: _search1,
+    //         child: value.text.isNotEmpty ? const Text('UPDATE'):const Text('SAVE'),
+    //       );
+    //     },
+    //   ),
+        Text("hello: $lon"),
+    
       
       
             ],
@@ -170,5 +208,10 @@ setState(() {
    void _search() async {
     final response = await _dataService.getWeather(_cityTextController.text);
    setState(() => _response= response);
+  }
+
+    void _search1() async {
+    final response1 = await _dataService1.getWeather1('kathmandu');
+   setState(() => _response1= response1);
   }
 }
