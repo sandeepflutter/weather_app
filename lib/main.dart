@@ -8,7 +8,7 @@ import 'package:weather_app/splash.dart';
 import 'package:weather_app/services.dart';
 import 'package:weather_app/weather.dart';
 import 'package:geolocator/geolocator.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 void main() {
@@ -92,15 +92,18 @@ setState(() {
   final _cityTextController1 = TextEditingController();
   final _dataService = DataService();
   final _dataService1= DataService1();
+  final _dataService2 =DataService2();
 
   WeatherResponse? _response;
   WeatherResponse? _response1;
-
+ WeatherResponse1? _response2;
    @override
   void initState() {
     super.initState();
    getCurrentLocation();
       _search1();
+      _search2();
+
   }
 
 
@@ -228,7 +231,7 @@ setState(() {
     //   ),
         Text("hello: $lon"),
     
-      
+      Text("$_response2"),
       
             ],
           ),
@@ -247,5 +250,10 @@ setState(() {
     void _search1() async {
     final response1 = await _dataService1.getWeather1('kathmandu');
    setState(() => _response1= response1);
+  }
+
+  void _search2() async {
+    final response2 = await _dataService2.getWeather2(27.69,85.31);
+   setState(() => _response2= response2);
   }
 }

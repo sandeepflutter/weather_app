@@ -51,3 +51,33 @@ class WeatherResponse {
 }
 
 
+
+
+class NameInfo {
+  final double name;
+
+  NameInfo({required this.name});
+
+  factory NameInfo.fromJson( dynamic json) {
+    final name = json['name'];
+    return NameInfo(name: name);
+  }
+}
+
+
+class WeatherResponse1 {
+  //final String cityName;
+  final NameInfo nameInfo;
+
+  WeatherResponse1({ required this.nameInfo});
+
+  factory WeatherResponse1.fromJson( dynamic json) {
+    //final cityName = json['name'];
+
+    final nameInfoJson = json['name'];
+    final nameInfo = NameInfo.fromJson(nameInfoJson);
+
+    return WeatherResponse1(
+         nameInfo: nameInfo);
+  }
+}
