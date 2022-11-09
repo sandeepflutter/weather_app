@@ -50,30 +50,4 @@ class WeatherResponse {
   }
 }
 
-class MessInfo {
-  final double message;
 
-  MessInfo({required this.message});
-
-  factory MessInfo.fromJson( dynamic json) {
-    final message = json['temp'];
-    return MessInfo(message: message);
-  }
-}
-
-class WeatherResponse2 {
-  final String cityName;
-  final MessInfo messInfo;
-
-  WeatherResponse2({required this.cityName, required this.messInfo});
-
-  factory WeatherResponse2.fromJson( dynamic json) {
-    final cityName = json['name'];
-
-    final messInfoJson = json['message'];
-    final messInfo = MessInfo.fromJson(messInfoJson);
-
-    return WeatherResponse2(
-        cityName: cityName, messInfo: messInfo,);
-  }
-}
