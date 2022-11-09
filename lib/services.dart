@@ -3,9 +3,10 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:weather_app/weather.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class DataService {
-  Future<WeatherResponse> getWeather(String city) async {
+  Future<Object> getWeather(String city) async {
     // https://api.openweathermap.org/data/2.5/weather?q=delhi&appid=eb558e5341b8e9ba278feb71ed3f3b2c
 
 
@@ -20,8 +21,25 @@ class DataService {
 
     final response = await http.get(uri);
   
-    final json = jsonDecode(response.body);
+  if (response.statusCode == 200) {
+       final json = jsonDecode(response.body);
     return WeatherResponse.fromJson(json);
+    } else {
+
+     return Fluttertoast.showToast(msg: 'Please Enter Correct City Name', gravity: ToastGravity.BOTTOM);
+    // return Future.error('FooError');
+    }
+
+//   if(response.isNotEmpty || response['status'] != 200) {
+//     // make error boolean variable true and set in view if true show error message.
+// } else {
+//    // make error boolean variable false
+//    final json = jsonDecode(response.body);
+//     return WeatherResponse.fromJson(json);88
+// }
+
+    // final json = jsonDecode(response.body);
+    // return WeatherResponse.fromJson(json);
   }
 }
 

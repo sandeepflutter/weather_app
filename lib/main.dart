@@ -1,8 +1,15 @@
+// ignore_for_file: prefer_const_constructors, duplicate_ignore
+
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:weather_app/splash.dart';
 import 'package:weather_app/services.dart';
 import 'package:weather_app/weather.dart';
 import 'package:geolocator/geolocator.dart';
+
+
 
 void main() {
   runApp(const MyApp());
@@ -93,12 +100,10 @@ setState(() {
   void initState() {
     super.initState();
    getCurrentLocation();
-
       _search1();
-
   }
 
-  
+
 
   @override
   void dispose(){
@@ -132,6 +137,8 @@ setState(() {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
 
+               
+
               if (_response != null)
                 Column(
                   children: [
@@ -140,7 +147,7 @@ setState(() {
                       '${_response!.tempInfo.temperature}°',
                       style: const TextStyle(fontSize: 40),
                     ),
-                    Text(_response!.weatherInfo.description)
+                    Text(_response!.weatherInfo.description),
                   ],
                 ),
 
@@ -156,7 +163,32 @@ setState(() {
                   ],
                 ),
 
-                  
+                   if (_response1 == null && _response == null)
+                     Padding(
+                      padding: const EdgeInsets.all(30.0),
+                      child: Column(
+                        // ignore: prefer_const_literals_to_create_immutables
+                        children: [
+                           CircularProgressIndicator(),
+                           // ignore: prefer_const_constructors
+                           Text("Check Your Internet",
+                          style: TextStyle(fontSize: 20),)
+                        ],
+                      ),
+                    ),
+
+                  // if(_response?.tempInfo.temperature == null)
+                  //    Padding(
+                  //     padding: EdgeInsets.all(30.0),
+                  //     child: Column(
+                  //       // ignore: prefer_const_literals_to_create_immutables
+                  //       children: [
+                  //          // ignore: prefer_const_constructors
+                  //          Text("Enter Correct City",
+                  //         style: TextStyle(fontSize: 20),)
+                  //       ],
+                  //     ),
+                  //   ),
                 
 
                 
@@ -207,8 +239,10 @@ setState(() {
   }
    void _search() async {
     final response = await _dataService.getWeather(_cityTextController.text);
-   setState(() => _response= response);
+   setState(() => _response= response as WeatherResponse?);
   }
+
+
 
     void _search1() async {
     final response1 = await _dataService1.getWeather1('kathmandu');
