@@ -173,7 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     Image.network(_response!.iconUrl),
                     Text(
-                      '${_response!.tempInfo.temperature}°',
+                      '${_response!.tempInfo.temperature}°C',
                       style: const TextStyle(fontSize: 40),
                     ),
                     Text(_response!.weatherInfo.description),
@@ -185,7 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     Image.network(_response1!.iconUrl),
                     Text(
-                      '${_response1!.tempInfo.temperature}°',
+                      '${_response1!.tempInfo.temperature}°C',
                       style: const TextStyle(fontSize: 40),
                     ),
                     Text(_response1!.weatherInfo.description)
