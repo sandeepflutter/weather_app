@@ -3,12 +3,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:weather_app/splash.dart';
 import 'package:weather_app/services.dart';
 import 'package:weather_app/weather.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 
 void main() {
@@ -42,69 +43,96 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  var location="";
-  var lat="";
-  var lon ="";
 
-  void getCurrentLocation() async{
-bool serviceEnabled;
+   String? _currentAddress;
+   Position? _currentPosition;
+
+   // Future<void> _loadCounter() async {
+   //   final prefs = await SharedPreferences.getInstance();
+   //   setState(() {
+   //     _currentPosition = (prefs.getInt('counter') ?? 0);
+   //   });
+   // }
+
+
+
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
     LocationPermission permission;
 
-     // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
-      return Future.error('Location services are disabled.');
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
     }
- 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
-        return Future.error('Location permissions are denied');
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
       }
     }
- 
     if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
     }
-
-    var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-
-setState(() {
-  location = "$position.latitude ,$position.longitude";
- // lat = "$position.latitude";
-  lon ="$position.longitude";
-});
-
+    return true;
   }
 
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
+
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+      _getAddressFromLatLng(_currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+
+    Future<void> _getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(
+        _currentPosition!.latitude, _currentPosition!.longitude)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      setState(() {
+        _currentAddress =
+        ' ${place.subAdministrativeArea}';
+      });
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+
+
   final _cityTextController = TextEditingController();
-  final _cityTextController1 = TextEditingController();
   final _dataService = DataService();
   final _dataService1= DataService1();
-  final _dataService2 =DataService2();
 
   WeatherResponse? _response;
   WeatherResponse? _response1;
- WeatherResponse1? _response2;
+
    @override
   void initState() {
     super.initState();
-   getCurrentLocation();
+   _getCurrentPosition();
       _search1();
-      _search2();
-
   }
+
 
 
 
@@ -140,8 +168,6 @@ setState(() {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
 
-               
-
               if (_response != null)
                 Column(
                   children: [
@@ -154,8 +180,8 @@ setState(() {
                   ],
                 ),
 
-                if (_response1 != null && _response == null)
-                   Column(
+              if (_response1 != null && _response == null)
+                Column(
                   children: [
                     Image.network(_response1!.iconUrl),
                     Text(
@@ -166,8 +192,8 @@ setState(() {
                   ],
                 ),
 
-                   if (_response1 == null && _response == null)
-                     Padding(
+              if (_response1 == null && _response == null)
+                Padding(
                       padding: const EdgeInsets.all(30.0),
                       child: Column(
                         // ignore: prefer_const_literals_to_create_immutables
@@ -180,21 +206,6 @@ setState(() {
                       ),
                     ),
 
-                  // if(_response?.tempInfo.temperature == null)
-                  //    Padding(
-                  //     padding: EdgeInsets.all(30.0),
-                  //     child: Column(
-                  //       // ignore: prefer_const_literals_to_create_immutables
-                  //       children: [
-                  //          // ignore: prefer_const_constructors
-                  //          Text("Enter Correct City",
-                  //         style: TextStyle(fontSize: 20),)
-                  //       ],
-                  //     ),
-                  //   ),
-                
-
-                
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 50),
                 child: SizedBox(
@@ -207,8 +218,6 @@ setState(() {
                       textAlign: TextAlign.center),
                 ),
               ),
-
-
 //Changing value of button as per Input text
               ValueListenableBuilder<TextEditingValue>(
         valueListenable: _cityTextController,
@@ -220,19 +229,10 @@ setState(() {
         },
       ),
 
-    // ValueListenableBuilder<TextEditingValue>(
-    //     valueListenable: _cityTextController,
-    //     builder: (context, value, child) {
-    //       return ElevatedButton(
-    //         onPressed: _search1,
-    //         child: value.text.isNotEmpty ? const Text('UPDATE'):const Text('SAVE'),
-    //       );
-    //     },
-    //   ),
-        Text("hello: $lon"),
-    
-      Text("$_response2"),
-      
+              Text('LAT: ${_currentPosition?.latitude ?? ""}'),
+              Text('LNG: ${_currentPosition?.longitude ?? ""}'),
+              Text('CURRENT ADDRESS: ${_currentAddress ?? ""}'),
+
             ],
           ),
         ),
@@ -246,14 +246,9 @@ setState(() {
   }
 
 
-
     void _search1() async {
     final response1 = await _dataService1.getWeather1('kathmandu');
    setState(() => _response1= response1);
   }
 
-  void _search2() async {
-    final response2 = await _dataService2.getWeather2(27.69,85.31);
-   setState(() => _response2= response2);
-  }
 }
