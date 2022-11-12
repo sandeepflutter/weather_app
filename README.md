@@ -10,7 +10,22 @@ When we enter city name it gives that particular city weather details. For testi
 Screenshots of app
 
 
+#### Flutter App Screenshots
 
+<table>
+  <tr>
+    <td>First Screen Page</td>
+     <td>Holiday Mention</td>
+     <td>Present day in purple and selected day in pink</td>
+  </tr>
+  <tr>
+    <td><img src="https://user-images.githubusercontent.com/60030358/201295670-cbb93918-2a8c-4a28-86de-c21cda4d7986.jpg" width=270 height=480></td>
+    <td><img src="https://user-images.githubusercontent.com/60030358/201295711-9236b7a2-66ec-4348-88de-08613660c51a.jpg" width=270 height=480></td>
+    <td><img src="https://user-images.githubusercontent.com/60030358/201295714-38db4b81-8401-40d1-ba3d-a99267ac2468.jpg" width=270 height=480></td>
+    <td><img src="https://user-images.githubusercontent.com/60030358/201295718-901d2f60-bfb3-44f5-96e6-e3e11474703c.jpg" width=270 height=480></td>
+  </tr>
+ </table>
+ 
 <p float="left">
 <img src="https://user-images.githubusercontent.com/60030358/201295670-cbb93918-2a8c-4a28-86de-c21cda4d7986.jpg" width="200" height="350">
 <img src="https://user-images.githubusercontent.com/60030358/201295711-9236b7a2-66ec-4348-88de-08613660c51a.jpg" width="200" height="350">
