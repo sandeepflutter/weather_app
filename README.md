@@ -12,10 +12,10 @@ Screenshots of app
 
 
 <p float="left">
-<img src="https://user-images.githubusercontent.com/60030358/201295670-cbb93918-2a8c-4a28-86de-c21cda4d7986.jpg" width="100" height="100">
-<img src="https://user-images.githubusercontent.com/60030358/201295711-9236b7a2-66ec-4348-88de-08613660c51a.jpg" width="100" height="100">
-<img src="https://user-images.githubusercontent.com/60030358/201295714-38db4b81-8401-40d1-ba3d-a99267ac2468.jpg" width="100" height="100">
-<img src="https://user-images.githubusercontent.com/60030358/201295718-901d2f60-bfb3-44f5-96e6-e3e11474703c.jpg" width="100" height="100">
+<img src="https://user-images.githubusercontent.com/60030358/201295670-cbb93918-2a8c-4a28-86de-c21cda4d7986.jpg" width="200" height="300">
+<img src="https://user-images.githubusercontent.com/60030358/201295711-9236b7a2-66ec-4348-88de-08613660c51a.jpg" width="200" height="300">
+<img src="https://user-images.githubusercontent.com/60030358/201295714-38db4b81-8401-40d1-ba3d-a99267ac2468.jpg" width="200" height="300">
+<img src="https://user-images.githubusercontent.com/60030358/201295718-901d2f60-bfb3-44f5-96e6-e3e11474703c.jpg" width="200" height="300">
 </p>
 
 A few resources to get you started if this is your first Flutter project:
