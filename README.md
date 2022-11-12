@@ -14,10 +14,10 @@ Screenshots of app
 
 <table>
   <tr>
-    <td>First Screen Page</td>
-     <td>Holiday Mention</td>
-     <td>Present day in purple and selected day in pink</td>
-    <td>Present day in purple and selected day in pink</td>
+    <td>First Screen (Splash Screen)</td>
+     <td>Error Message</td>
+     <td>Current city weather details</td>
+    <td>Selected city weather details</td>
   </tr>
   <tr>
     <td><img src="https://user-images.githubusercontent.com/60030358/201295670-cbb93918-2a8c-4a28-86de-c21cda4d7986.jpg" width=280 height=480></td>
